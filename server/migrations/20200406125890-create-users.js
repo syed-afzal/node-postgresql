@@ -27,6 +27,17 @@ module.exports = {
       imageurl: {
         type: Sequelize.STRING,
       },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          isEmail:true
+        },
+        unique: {
+          args: true,
+          msg: 'Email address already in use!'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
