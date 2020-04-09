@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon ./bin/www",
+    "start-dev": "nodemon ./bin/www",
     "dev-migration": "set NODE_ENV=development&& sequelize db:migrate",
     "prod-migration": "set NODE_ENV=production&& sequelize db:migrate",
     "test-migration": "set NODE_ENV=test&& sequelize db:migrate",

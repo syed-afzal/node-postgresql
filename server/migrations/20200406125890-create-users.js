@@ -29,21 +29,15 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          isEmail:true
-        },
-        unique: {
-          args: true,
-          msg: 'Email address already in use!'
-        }
+        validate: { isEmail: true },
+        unique: true
       },
       createdAt: {
-        allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE
       }
     });

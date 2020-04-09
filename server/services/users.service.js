@@ -16,7 +16,7 @@ usersService.findAllUsersWithPermissions = async () => {
 };
 
 usersService.createUser = async (user = {}) => {
-
+    return await userRepository.insert(user)
 };
 
 usersService.updateUser = async (user = {}) => {

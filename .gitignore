@@ -55,3 +55,4 @@ build
 
 # SonarQube sonar-scanner temp directory
 .scannerwork
+playground/

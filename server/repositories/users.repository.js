@@ -1,4 +1,4 @@
-const Users = require('../models/users');
+const Users = require('../models').Users;
 const Role_to_Permissions = require('../models/roles_to_permissions');
 const dbContext = require('../config/dbContext');
 
@@ -34,7 +34,7 @@ usersRepository.findAllUsersWithPermissions = async (req, res) => {
 
 usersRepository.insert  = async (user) => {
     return dbContext
-        .query('CALL create_user (:name, :id, :role_name, :gender, :dob, :imageUrl)',
+        .query('CALL create_user (:name, :id, :role_name, :gender, :dob, :imageUrl, :email)',
             {
                 replacements: {
                     name: user.name,
@@ -42,14 +42,16 @@ usersRepository.insert  = async (user) => {
                     role_name: user.role_name,
                     gender: user.gender,
                     dob: user.dob,
-                    imageUrl: user.imageUrl ? user.imageUrl : null
+                    imageUrl: user.imageUrl ? user.imageUrl : null,
+                    email: user.email
                 }
             })
         .then((v)=> {
-            return 'User created with role successfully'
+            // return 'User created with role successfully'
+            return v;
         })
         .catch((e) => {
-            console.log(e)
+            throw new Error('ID_NOT_FOUND');
         })
 }
 

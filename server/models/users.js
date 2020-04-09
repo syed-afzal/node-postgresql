@@ -5,22 +5,16 @@ module.exports = (sequelize, DataTypes) => {
     role_id: DataTypes.INTEGER,
     gender: DataTypes.STRING,
     dob: {
-      type: Sequelize.DATEONLY,
+      type: DataTypes.DATEONLY,
     },
     imageurl: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
     },
     email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        isEmail:true
-      },
-      unique: {
-        args: true,
-        msg: 'Email address already in use!'
-      }
-    }
+      type: DataTypes.STRING,
+      validate: { isEmail: true },
+      unique: true
+    },
   },
       {
     freezeTableName: true // Model tableName will be the same as the model name
