@@ -5,7 +5,7 @@ const dbContext = require('../config/db.context');
 const usersRepository = {};
 
 usersRepository.findOne = async (options) => {
-    return await Users.findOne(options).map(el => el.get({ plain: true }));
+    return await Users.findOne(options);
 };
 
 usersRepository.findAll = async (options) => {

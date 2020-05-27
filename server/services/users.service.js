@@ -7,7 +7,11 @@ const usersService = {};
 
 usersService.login = async (data = {}) => {
     try {
-        const user = await userRepository.findOne({ where: { email: data.email }, include:[{model: role}] });
+        const user = await userRepository.findOne({
+            raw: true, // just return dataValues not whole object link https://stackoverflow.com/questions/46380563/get-only-datavalues-from-sequelize-orm
+            where: { email: data.email },
+            attributes: {exclude: ['createdAt','updatedAt']}
+            });
         if (!user) return {message: messages.USER_NOT_EXISt, user:null};
 
         // check the password
@@ -15,7 +19,9 @@ usersService.login = async (data = {}) => {
         if(!password_check) return {message: messages.AUTHENTICATION_FAILED, user:null};
 
         // generate jwt token
-        usersService.token = createToken(user, 86400);
+        user.token = createToken(user, 86400);
+
+        delete user.password;
 
         return {message: messages.SUCCESSFUL, user};
     } catch (e) {
