@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config({path:__dirname + '/.env'});
 
 // db connection
-const db = require('./server/config/dbContext');
+const db = require('./server/config/db.context');
 db.connect();
 
 // Set up the express app

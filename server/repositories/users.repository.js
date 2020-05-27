@@ -1,8 +1,12 @@
 const Users = require('../models').Users;
 const Role_to_Permissions = require('../models/roles_to_permissions');
-const dbContext = require('../config/dbContext');
+const dbContext = require('../config/db.context');
 
 const usersRepository = {};
+
+usersRepository.findOne = async (options) => {
+    return await Users.findOne(options).map(el => el.get({ plain: true }));
+};
 
 usersRepository.findAll = async (options) => {
     return await Users.findAll(options);

@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     imageurl: {
       type: DataTypes.STRING,
     },
+    password:DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
       validate: { isEmail: true },

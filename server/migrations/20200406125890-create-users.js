@@ -27,6 +27,9 @@ module.exports = {
       imageurl: {
         type: Sequelize.STRING,
       },
+      password: {
+        type: Sequelize.STRING,
+      },
       email: {
         type: Sequelize.STRING,
         validate: { isEmail: true },

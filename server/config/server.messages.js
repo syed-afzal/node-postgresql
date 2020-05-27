@@ -49,6 +49,11 @@ module.exports = {
         success: true,
         message: 'Already exists',
     },
+    USER_NOT_EXISt: {
+        code: 400,
+        message: 'Authentication failed. User does not exist.',
+        success: false,
+    },
     FORBIDDEN: {
         code: 403,
         message: 'You are not authorized to complete this action',

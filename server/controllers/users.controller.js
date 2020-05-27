@@ -1,12 +1,23 @@
 const { Op } = require("sequelize");
 
-const hepler = require('../helpers/requestUtilties');
+const hepler = require('../helpers/request.utilties');
 const userService = require('../services/users.service');
 const messages = require('../config/server.messages');
 const serverResponse = require('../helpers/server.responses');
 
 
 const usersController = {};
+
+usersController.login = async (req,res) => {
+    // check required fields
+    const required = ['email', 'password'];
+    const data = req.body;
+    const fieldsVerified = hepler.fieldsValidaton(data, required);
+    if (!fieldsVerified.success)
+        serverResponse.sendError(res, fieldsVerified);
+    const loginData = await userService.login(data, res);
+    return serverResponse.sendSuccess(res, loginData.message, loginData.user)
+};
 
 usersController.getUser = async (req, res) => {
     const isEmpty = obj => Object.keys(obj).length <= 0;

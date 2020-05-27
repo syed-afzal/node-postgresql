@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const usersController = require('../controllers/users.controller');
 
+router.post('/login', usersController.login)
+
 router.get('/',  usersController.getUser);
 
 router.get('/getUsersWithPermissions', usersController.getUsersWithPermissions);
