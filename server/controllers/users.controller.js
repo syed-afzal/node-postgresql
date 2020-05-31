@@ -60,7 +60,7 @@ usersController.getUser = async (req, res) => {
 };
 
 usersController.getUsersWithPermissions = async (req, res) => {
-    res.status(200).send(await service.findAllUsersWithPermissions());
+    res.status(200).send(await userService.findAllUsersWithPermissions());
 };
 
 
