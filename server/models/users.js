@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
 
     Users.belongsTo(models.Roles, {
-      foreignKey: 'role_id'
+      foreignKey: 'role_id',
+      as: 'userRole'
     })
   };
   return Users;

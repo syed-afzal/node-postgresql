@@ -34,3 +34,7 @@ $$;
 
 CALL create_user('Afzal', 1, 'SUPER ADMIN', 'male', '1985-05-26', 'upload/user',
  'syed.afzal@venturedive.com', '$2b$10$wADLYcEmQJQIZ/gv5avRnu3yJVRquJroFwThNx3Bcj4dULiviBSfS');
+
+INSERT into "Permissions" (id,"name") VALUES(1, ARRAY['create', 'read', 'update', 'delete']);
+
+INSERT into "Roles_to_Permissions" (role_id,permission_id) VALUES(1,1);
