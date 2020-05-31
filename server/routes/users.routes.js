@@ -1,14 +1,15 @@
 const router = require('express').Router();
+const {verifyToken} = require('../middlewares/jwt.middleware');
 
 const usersController = require('../controllers/users.controller');
 
 router.post('/login', usersController.login);
 
-router.get('/',  usersController.getUser);
+router.get('/searchUSer',  usersController.searchUser);
 
 router.get('/getUsersWithPermissions', usersController.getUsersWithPermissions);
 
-router.get('/:id', usersController.getUserById);
+router.get('/me', verifyToken, usersController.getUser);
 
 router.post('/', usersController.createUser);
 

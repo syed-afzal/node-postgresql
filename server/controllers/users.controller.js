@@ -19,7 +19,7 @@ usersController.login = async (req,res) => {
     return serverResponse.sendSuccess(res, loginData.message, loginData.user)
 };
 
-usersController.getUser = async (req, res) => {
+usersController.searchUser = async (req, res) => {
     const isEmpty = obj => Object.keys(obj).length <= 0;
     if (!isEmpty(req.query)) {
         const options = {};
@@ -44,15 +44,15 @@ usersController.getUser = async (req, res) => {
                 [Op.gt]: start,
             }
         }
-        return res.status(200).send(await userService.getUser(options));
+        return res.status(200).send(await userService.searchUser(options));
     }
-    return res.status(200).send(await userService.getUser());
+    return res.status(200).send(await userService.searchUser());
 };
 
-usersController.getUserById = async (req, res) => {
+usersController.getUser = async (req, res) => {
     try {
-        const id = req.params.id;
-        const task = await userService.getUserById({ id });
+        const id = req.user.id;
+        const task = await userService.getUser(id);
         res.status(200).send(task);
     } catch (e) {
         res.status(400).send(e.message);

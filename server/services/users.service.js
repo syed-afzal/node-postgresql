@@ -4,19 +4,23 @@ const bcrypt = require('bcrypt');
 const {createToken} = require('../middlewares/jwt.middleware');
 const Roles = require('../models').Roles;
 
+const userProjection =  {
+    raw: true, // just return dataValues not whole object link https://stackoverflow.com/questions/46380563/get-only-datavalues-from-sequelize-orm
+    include:[{
+        model: Roles,
+        as: 'userRole',
+        attributes: {exclude: ['createdAt','updatedAt']}
+    }],
+    attributes: {exclude: ['createdAt','updatedAt', 'role_id']}
+};
+
 const usersService = {};
 
 usersService.login = async (data = {}) => {
     try {
         const user = await userRepository.findOne({
-            raw: true, // just return dataValues not whole object link https://stackoverflow.com/questions/46380563/get-only-datavalues-from-sequelize-orm
+            ...userProjection,
             where: { email: data.email },
-            include:[{
-                model: Roles,
-                as: 'userRole',
-                attributes: {exclude: ['createdAt','updatedAt', 'id']}
-            }],
-            attributes: {exclude: ['createdAt','updatedAt', 'role_id']}
             });
         if (!user) return {message: messages.USER_NOT_EXISt, user:null};
 
@@ -35,12 +39,17 @@ usersService.login = async (data = {}) => {
     }
 };
 
-usersService.getUser = async (options = {}) => {
+usersService.searchUser = async (options = {}) => {
     return await userRepository.findAll(options);
 };
 
-usersService.getUserById = async (searchBy = {}) => {
-    return await userRepository.find(searchBy);
+usersService.getUser = async (id) => {
+    return await userRepository.findOne({
+        ...userProjection,
+        where: {
+            id
+        }
+    });
 
 };
 
