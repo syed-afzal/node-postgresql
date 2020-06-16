@@ -1,6 +1,6 @@
 const Users = require('../models').Users;
-const Role_to_Permissions = require('../models/roles_to_permissions');
 const dbContext = require('../config/db.context');
+const bcrypt = require('bcrypt');
 
 const usersRepository = {};
 
@@ -38,16 +38,16 @@ usersRepository.findAllUsersWithPermissions = async (req, res) => {
 
 usersRepository.insert  = async (user) => {
     return dbContext
-        .query('CALL create_user (:name, :id, :role_name, :gender, :dob, :imageUrl, :email)',
+        .query('CALL create_user (:name, :role_id, :gender, :dob, :imageUrl, :email, :password)',
             {
                 replacements: {
                     name: user.name,
-                    id: user.role_id,
-                    role_name: user.role_name,
+                    role_id: user.role_id ? user.role_id : null,
                     gender: user.gender,
                     dob: user.dob,
                     imageUrl: user.imageUrl ? user.imageUrl : null,
-                    email: user.email
+                    email: user.email,
+                    password: user.password
                 }
             })
         .then((v)=> {

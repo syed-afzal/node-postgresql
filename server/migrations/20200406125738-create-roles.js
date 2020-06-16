@@ -11,6 +11,10 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      permission_id: {
+       type: Sequelize.INTEGER,
+       allowNull: true
+      },
       createdAt: {
         defaultValue: new Date(),
         type: Sequelize.DATE

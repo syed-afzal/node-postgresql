@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Permissions.associate = function(models) {
     // associations can be defined here
+
+    Permissions.hasMany(models.Roles, {
+      foreignKey: 'role_id',
+    });
   };
   return Permissions;
 };

@@ -66,7 +66,7 @@ usersController.getUsersWithPermissions = async (req, res) => {
 
 usersController.createUser = async (req, res) => {
     // check required fields
-    const required = ['email'];
+    const required = ['email', 'password'];
     const data = req.body;
     const fieldsVerified = hepler.fieldsValidaton(data, required);
     if (!fieldsVerified.success)

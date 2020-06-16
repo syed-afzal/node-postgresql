@@ -3,13 +3,19 @@ const messages = require('../config/server.messages');
 const bcrypt = require('bcrypt');
 const {createToken} = require('../middlewares/jwt.middleware');
 const Roles = require('../models').Roles;
+const Permissions = require('../models').Permissions;
 
 const userProjection =  {
-    raw: true, // just return dataValues not whole object link https://stackoverflow.com/questions/46380563/get-only-datavalues-from-sequelize-orm
+    //raw: true, // just return dataValues not whole object link https://stackoverflow.com/questions/46380563/get-only-datavalues-from-sequelize-orm
     include:[{
         model: Roles,
         as: 'userRole',
-        attributes: {exclude: ['createdAt','updatedAt']}
+        attributes: {exclude: ['createdAt','updatedAt', 'role_id']},
+        include: [{
+            model: Permissions,
+            as: 'userPermissions',
+            attributes: {exclude: ['createdAt','updatedAt']}
+        }]
     }],
     attributes: {exclude: ['createdAt','updatedAt', 'role_id']}
 };
@@ -18,11 +24,13 @@ const usersService = {};
 
 usersService.login = async (data = {}) => {
     try {
-        const user = await userRepository.findOne({
+        let user = await userRepository.findOne({
             ...userProjection,
             where: { email: data.email },
             });
         if (!user) return {message: messages.USER_NOT_EXISt, user:null};
+
+        user = user.get();
 
         // check the password
         const password_check = await bcrypt.compareSync(data.password, user.password);
@@ -58,6 +66,7 @@ usersService.findAllUsersWithPermissions = async () => {
 };
 
 usersService.createUser = async (user = {}) => {
+    user.password = await bcrypt.hash(user.password, 10);
     return await userRepository.insert(user)
 };
 
