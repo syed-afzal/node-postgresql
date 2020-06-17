@@ -81,7 +81,7 @@ usersRepository.assignRole = async (data) => {
 usersRepository.assignPermissionsToRole = async (data) => {
     console.log(data.permissions)
     return dbContext
-        .query('CALL assign_permissions_to_role (:permission_id, :permissions, :role_id)',
+        .query('CALL assign_permissions_to_role (:permission_id, ARRAY[:permissions], :role_id)',
             {
                 replacements: {
                     permission_id: data.permission_id,
