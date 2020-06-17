@@ -79,6 +79,28 @@ usersController.createUser = async (req, res) => {
     }
 };
 
+usersController.assignRole = async (req, res) => {
+    // check required fields
+    const required = ['role_id', 'role_name', 'user_id'];
+    const data = req.body;
+    const fieldsVerified = hepler.fieldsValidaton(data, required);
+    if (!fieldsVerified.success)
+        serverResponse.sendError(res, fieldsVerified);
+    await userService.assignRole(data);
+    serverResponse.sendSuccess(res, messages.ROLE_ASSIGNED_SUCCESFULL);
+};
+
+usersController.assignPermissionsToRole = async (req, res) => {
+    // check required fields
+    const required = ['permission_id', 'permissions', 'role_id'];
+    const data = req.body;
+    const fieldsVerified = hepler.fieldsValidaton(data, required);
+    if (!fieldsVerified.success)
+        serverResponse.sendError(res, fieldsVerified);
+    await userService.assignPermissionsToRole(data);
+    serverResponse.sendSuccess(res, messages.PERMISSION_ASSIGNED_SUCCESFULL);
+};
+
 usersController.updateUser = async (req, res) => {
 
 };

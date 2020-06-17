@@ -39,6 +39,16 @@ module.exports = {
         success: true,
         message: 'User created succesfully',
     },
+    ROLE_ASSIGNED_SUCCESFULL: {
+        code: 200,
+        success: true,
+        message: 'Role is assign to user succesfully',
+    },
+    PERMISSION_ASSIGNED_SUCCESFULL: {
+        code: 200,
+        success: true,
+        message: 'Permission assigned to role succesfully',
+    },
     NOT_FOUND: {
         code: 404,
         success: true,

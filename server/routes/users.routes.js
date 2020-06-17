@@ -14,8 +14,9 @@ router.get('/me', verifyToken, usersController.getUser);
 
 router.post('/', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), usersController.createUser);
 
-// router.post('/assignUserRole', usersController.);
-// router.post('/assignPermissionRole', usersController.);
+router.put('/assignUserRole', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), usersController.assignRole);
+
+router.put('/assignPermissionsToRole', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), usersController.assignPermissionsToRole);
 
 router.delete('/:id', usersController.deleteUser);
 

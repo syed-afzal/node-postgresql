@@ -57,16 +57,43 @@ usersRepository.insert  = async (user) => {
         .catch((e) => {
             throw new Error('ID_NOT_FOUND');
         })
-}
+};
 
-usersRepository.assignPermissionToRole = async (data) => {
+usersRepository.assignRole = async (data) => {
     return dbContext
-        .query('CALL assign_permission_to_role (:role_id, :permission_id, :permission_name)',
-            {replacements: { role_id: data.role_id, permission_id: data.permission_id, permission_name: data.permission_name, }})
+        .query('CALL assign_role_to_user (:role_id, :role_name, :user_id)',
+            {
+                replacements: {
+                    role_id: data.role_id,
+                    role_name: data.role_name,
+                    user_id: data.user_id,
+                }
+            })
         .then((v)=> {
-            return 'permission assigned to role successfully'
+            return v;
         })
         .catch((e) => {
+            console.log('Error : ', e)
+            return e;
+        })
+}
+
+usersRepository.assignPermissionsToRole = async (data) => {
+    console.log(data.permissions)
+    return dbContext
+        .query('CALL assign_permissions_to_role (:permission_id, :permissions, :role_id)',
+            {
+                replacements: {
+                    permission_id: data.permission_id,
+                    permissions: data.permissions,
+                    role_id: data.role_id,
+                }
+            })
+        .then((v)=> {
+            return v;
+        })
+        .catch((e) => {
+            console.log('Error : ', e);
             return e;
         })
 }

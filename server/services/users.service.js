@@ -70,6 +70,14 @@ usersService.createUser = async (user = {}) => {
     return await userRepository.insert(user)
 };
 
+usersService.assignRole = async (data = {}) => {
+  return await userRepository.assignRole(data)
+};
+
+usersService.assignPermissionsToRole = async (data = {}) => {
+    return await userRepository.assignPermissionsToRole(data);
+}
+
 usersService.updateUser = async (user = {}) => {
 
 };
