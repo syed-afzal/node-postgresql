@@ -7,7 +7,7 @@ const usersController = require('../controllers/users.controller');
 
 router.post('/login', usersController.login);
 
-router.get('/searchUSer', verifyToken, verifyRole('ADMIN', 'EMPLOYEE'), wrap(usersController.searchUser));
+//router.get('/searchUSer', verifyToken, verifyRole('ADMIN', 'EMPLOYEE'), wrap(usersController.searchUser));
 
 router.get('/getUsersWithPermissions', verifyToken, wrap(usersController.getUsersWithPermissions));
 

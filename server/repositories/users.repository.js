@@ -16,24 +16,16 @@ usersRepository.find = async (searchBy = {}) => {
     return await Users.findAll({where: searchBy});
 };
 
-usersRepository.findAllUsersWithPermissions = async (req, res) => {
-    const user = await Users.findAll({
-        attributes:['name'],
-        where: {id:1},
-        include:[{model: role}],
-    }).map(el => el.get({ plain: true }));
-
-    const pemissions = await Role_to_Permissions.findAll({
-        where:{role_id:user[0].role.id},
-        include:[{model: permissions}]
-    }).map(el => el.get({ plain: true }));
-
-    return {
-        name: user[0].name,
-        role: user[0].role.name,
-        permission: pemissions[0].permission.name
-    }
-
+usersRepository.findAllUsersWithPermissions = async (options) => {
+    let users = await Users.findAll(options);
+    users =  JSON.parse(JSON.stringify(users));
+    return users.map(user  => (
+        {
+            name: user.name,
+            role: user.userRole.name,
+            pemissions: user.userRole.userPermissions
+        }
+    ));
 };
 
 usersRepository.insert  = async (user) => {

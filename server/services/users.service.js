@@ -61,8 +61,29 @@ usersService.getUser = async (id) => {
 
 };
 
-usersService.findAllUsersWithPermissions = async () => {
-    res.status(200).send(await userRepository.findAllUsersWithPermissions());
+usersService.findAllUsersWithPermissions = async (role) => {
+    const options = {
+        attributes:['name']
+    };
+    if (role === 'SUPER ADMIN') {
+        options.include = [{
+            model: Roles,
+            as: 'userRole',
+            attributes: ['name'],
+            include: [{
+                model: Permissions,
+                as: 'userPermissions',
+                attributes: ['name']
+            }]
+        }]
+    } else if (role === 'ADMIN') {
+        options.include = [{
+            model: Roles,
+            as: 'userRole',
+            attributes: ['name'],
+        }]
+    }
+    return await userRepository.findAllUsersWithPermissions(options);
 };
 
 usersService.createUser = async (user = {}) => {

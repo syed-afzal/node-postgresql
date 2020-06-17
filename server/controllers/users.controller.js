@@ -60,7 +60,8 @@ usersController.getUser = async (req, res) => {
 };
 
 usersController.getUsersWithPermissions = async (req, res) => {
-    res.status(200).send(await userService.findAllUsersWithPermissions());
+    const users = await userService.findAllUsersWithPermissions(req.user.userRole.name);
+    serverResponse.sendSuccess(res, messages.USER_CREATED_SUCCESFULL, users);
 };
 
 
