@@ -37,7 +37,7 @@ usersRepository.findAllUsersWithPermissions = async (req, res) => {
 };
 
 usersRepository.insert  = async (user) => {
-    return dbContext
+    return await dbContext
         .query('CALL create_user (:name, :role_id, :gender, :dob, :imageUrl, :email, :password)',
             {
                 replacements: {
@@ -49,18 +49,11 @@ usersRepository.insert  = async (user) => {
                     email: user.email,
                     password: user.password
                 }
-            })
-        .then((v)=> {
-            // return 'User created with role successfully'
-            return v;
-        })
-        .catch((e) => {
-            throw new Error('ID_NOT_FOUND');
-        })
+            });
 };
 
 usersRepository.assignRole = async (data) => {
-    return dbContext
+    return await dbContext
         .query('CALL assign_role_to_user (:role_id, :role_name, :user_id)',
             {
                 replacements: {
@@ -68,19 +61,11 @@ usersRepository.assignRole = async (data) => {
                     role_name: data.role_name,
                     user_id: data.user_id,
                 }
-            })
-        .then((v)=> {
-            return v;
-        })
-        .catch((e) => {
-            console.log('Error : ', e)
-            return e;
-        })
-}
+            });
+};
 
 usersRepository.assignPermissionsToRole = async (data) => {
-    console.log(data.permissions)
-    return dbContext
+    return await dbContext
         .query('CALL assign_permissions_to_role (:permission_id, ARRAY[:permissions], :role_id)',
             {
                 replacements: {
@@ -88,20 +73,7 @@ usersRepository.assignPermissionsToRole = async (data) => {
                     permissions: data.permissions,
                     role_id: data.role_id,
                 }
-            })
-        .then((v)=> {
-            return v;
-        })
-        .catch((e) => {
-            console.log('Error : ', e);
-            return e;
-        })
-}
-
-usersRepository.update = async (users) => {
+            });
 };
-
-usersRepository.deleteById = (id) =>{
-}
 
 module.exports = usersRepository;

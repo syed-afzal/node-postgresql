@@ -22,6 +22,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //  Requiring routes
  require('./server/routes')(app);
 
+ // global error handler
+app.use(function (err, req, res, next) {
+    err.statusCode = err.statusCode || 500;
+    err.status = err.status || 'error';
+
+    res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message
+    });
+});
+
  // Setup a default catch-all route that sends back a welcome message in JSON format.
 app.get('*', (req, res) => res.status(200).send({
     message: 'Welcome to the beginning of nothingness.',

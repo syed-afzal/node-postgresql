@@ -19,6 +19,8 @@ exports.fieldsValidaton = (data, requirements) => {
     }
 };
 
+exports.wrap = fn => (...args) => fn(...args).catch(args[2]);
+
 const verifyEmail = email => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());

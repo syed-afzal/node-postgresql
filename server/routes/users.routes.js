@@ -1,23 +1,24 @@
 const router = require('express').Router();
 const {verifyToken} = require('../middlewares/jwt.middleware');
 const {verifyRole} = require('../middlewares/role.middleware');
+const {wrap} = require('../helpers/request.utilties');
 
 const usersController = require('../controllers/users.controller');
 
 router.post('/login', usersController.login);
 
-router.get('/searchUSer', verifyToken, verifyRole('ADMIN', 'EMPLOYEE'), usersController.searchUser);
+router.get('/searchUSer', verifyToken, verifyRole('ADMIN', 'EMPLOYEE'), wrap(usersController.searchUser));
 
-router.get('/getUsersWithPermissions', verifyToken, usersController.getUsersWithPermissions);
+router.get('/getUsersWithPermissions', verifyToken, wrap(usersController.getUsersWithPermissions));
 
-router.get('/me', verifyToken, usersController.getUser);
+router.get('/me', verifyToken, wrap(usersController.getUser));
 
-router.post('/', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), usersController.createUser);
+router.post('/', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), wrap(usersController.createUser));
 
-router.put('/assignUserRole', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), usersController.assignRole);
+router.put('/assignUserRole', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), wrap(usersController.assignRole));
 
-router.put('/assignPermissionsToRole', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), usersController.assignPermissionsToRole);
+router.put('/assignPermissionsToRole', verifyToken, verifyRole('SUPER ADMIN', 'ADMIN'), wrap(usersController.assignPermissionsToRole));
 
-router.delete('/:id', usersController.deleteUser);
+router.delete('/:id', wrap(usersController.deleteUser));
 
 module.exports = router;
