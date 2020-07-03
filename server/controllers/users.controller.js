@@ -71,7 +71,7 @@ usersController.createUser = async (req, res) => {
     const data = req.body;
     const fieldsVerified = hepler.fieldsValidaton(data, required);
     if (!fieldsVerified.success)
-        return serverResponse.sendError(res,requiredFields);
+        return serverResponse.sendError(res,fieldsVerified);
     try {
         await userService.createUser(data);
         serverResponse.sendSuccess(res, messages.USER_CREATED_SUCCESFULL);

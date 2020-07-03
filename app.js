@@ -1,6 +1,8 @@
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 require('dotenv').config({path:__dirname + '/.env'});
 
@@ -21,6 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //  Requiring routes
  require('./server/routes')(app);
+
+ // Requiring Swagger UI
+ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
  // global error handler
 app.use(function (err, req, res, next) {

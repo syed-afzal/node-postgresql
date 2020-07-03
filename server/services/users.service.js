@@ -23,28 +23,24 @@ const userProjection =  {
 const usersService = {};
 
 usersService.login = async (data = {}) => {
-    try {
-        let user = await userRepository.findOne({
-            ...userProjection,
-            where: { email: data.email },
-            });
-        if (!user) return {message: messages.USER_NOT_EXISt, user:null};
+    let user = await userRepository.findOne({
+        ...userProjection,
+        where: { email: data.email },
+        });
+    if (!user) return {message: messages.AUTHENTICATION_FAILED, user:null};
 
-        user = user.get();
+    user = user.get();
 
-        // check the password
-        const password_check = await bcrypt.compareSync(data.password, user.password);
-        if(!password_check) return {message: messages.AUTHENTICATION_FAILED, user:null};
+    // check the password
+    const password_check = await bcrypt.compareSync(data.password, user.password);
+    if(!password_check) return {message: messages.AUTHENTICATION_FAILED, user:null};
 
-        // generate jwt token
-        user.token = createToken(user, 86400);
+    // generate jwt token
+    user.token = createToken(user, 86400);
 
-        delete user.password;
+    delete user.password;
 
-        return {message: messages.SUCCESSFUL, user};
-    } catch (e) {
-        throw new Error(e);
-    }
+    return {message: messages.SUCCESSFUL, user};
 };
 
 usersService.searchUser = async (options = {}) => {

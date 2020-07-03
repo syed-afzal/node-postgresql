@@ -59,7 +59,7 @@ module.exports = {
         success: true,
         message: 'Already exists',
     },
-    USER_NOT_EXISt: {
+    USER_NOT_EXIST: {
         code: 400,
         message: 'Authentication failed. User does not exist.',
         success: false,
