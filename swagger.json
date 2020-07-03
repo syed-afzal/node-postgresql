@@ -27,7 +27,7 @@
         "application/json"
     ],
     "paths": {
-        "/": {
+        "/user": {
             "post": {
                 "tags": [
                     "Users"
@@ -41,6 +41,15 @@
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "Acces token to create user",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
                     }
                 ],
                 "produces": [
@@ -48,18 +57,87 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "New user is created",
+                        "description": "User created succesfully",
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
                     }
                 }
-            },
+            }
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Logged in Api",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User logged in api into system",
+                        "schema": {
+                            "$ref": "#/definitions/UserLogin"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully completed",
+                        "schema": {
+                            "$ref": "#/definitions/UserLogin"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/me": {
             "get": {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get all users in system",
+                "summary": "Get login user from token",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "Acces token to create user",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/getUsersWithPermissions": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "Get all users with selected info based on role",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -68,25 +146,40 @@
                         }
                     }
                 }
-            },
-            "put": {
-                "summary": "Update user with given ID",
+            }
+        },
+        "/user/assignUserRole": {
+            "post": {
                 "tags": [
                     "Users"
                 ],
+                "summary": "Assign Role to a User",
                 "parameters": [
                     {
                         "name": "user",
                         "in": "body",
-                        "description": "User with new values of properties",
+                        "description": "Assign role to a specific user (Only Admin Cas Assign Role to a User)",
                         "schema": {
-                            "$ref": "#/definitions/User"
-                        }
+                            "$ref": "#/definitions/AssingUserRole"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "Acces token to assign role to a user",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
                     }
+                ],
+                "produces": [
+                    "application/json"
                 ],
                 "responses": {
                     "200": {
-                        "description": "User is updated",
+                        "description": "Role is assign to user succesfully",
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
@@ -94,38 +187,37 @@
                 }
             }
         },
-        "/{userId}": {
-            "parameters": [
-                {
-                    "name": "userId",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of user that we want to find",
-                    "type": "string"
-                }
-            ],
-            "get": {
+        "/user/assignPermissionsToRole": {
+            "post": {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get user with given ID",
-                "responses": {
-                    "200": {
-                        "description": "User is found",
+                "summary": "Assign Permission to a Role",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "Assign Permission to a Role (Only Admin Cas Assign Permissions to a Role)",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/AssingPermissionToRole"
                         }
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "Access token to assign permission to role",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
                     }
-                }
-            },
-            "delete": {
-                "summary": "Delete user with given ID",
-                "tags": [
-                    "Users"
+                ],
+                "produces": [
+                    "application/json"
                 ],
                 "responses": {
                     "200": {
-                        "description": "User is deleted",
+                        "description": "User created succesfully",
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
@@ -135,17 +227,28 @@
         }
     },
     "definitions": {
-        "User": {
+        "UserLogin" : {
             "required": [
-                "userId",
                 "email",
                 "password"
             ],
             "properties": {
-                "userId": {
+                "email": {
                     "type": "string",
                     "uniqueItems": true
                 },
+                "password": {
+                    "type": "string",
+                    "uniqueItems": true
+                }
+            }
+        },
+        "User": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
                 "email": {
                     "type": "string",
                     "uniqueItems": true
@@ -154,13 +257,62 @@
                     "type": "string",
                     "uniqueItems": true
                 },
-                "firstName": {
+                "name": {
                     "type": "string"
                 },
-                "lastName": {
+                "imageUrl": {
+                    "type": "string"
+                },
+                "dob": {
+                    "type": "string"
+                },
+                "gender": {
                     "type": "string"
                 }
-                
+            }
+        },
+        "Users": {
+            "properties": {
+                "users": []
+            }
+        },
+        "AssingUserRole": {
+            "required": [
+                "role_id",
+                "role_name",
+                "user_id"
+            ],
+            "properties": {
+                "role_id": {
+                    "type": "integer"
+                },
+                "role_name": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "AssingPermissionToRole": {
+            "required": [
+                "permission_id",
+                "permissions",
+                "role_id"
+            ],
+            "properties": {
+                "permission_id": {
+                    "type": "integer"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "role_id": {
+                    "type": "integer"
+                }
             }
         }
     }
